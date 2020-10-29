@@ -1,3 +1,6 @@
 [submodule "js-ceramic"]
 	path = js-ceramic
 	url = https://github.com/ceramicnetwork/js-ceramic.git
+[submodule "ceramic-anchor-service"]
+	path = ceramic-anchor-service
+	url = https://github.com/ceramicnetwork/ceramic-anchor-service.git
