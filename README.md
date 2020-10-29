@@ -5,4 +5,4 @@ Sandbox environment for starting Ceramic ecosystem locally.
 [@simonovic86](https://github.com/simonovic86)
 
 ## License
-MIT & Apache 2.0
+[MIT](LICENSE-MIT) & [Apache 2.0](LICENSE-APACHE)
