@@ -1,2 +1,2 @@
 # clayground
-Sandbox environment for starting Ceramic ecosystem locally
+Sandbox environment for starting Ceramic ecosystem locally.
