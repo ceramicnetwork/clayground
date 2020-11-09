@@ -7,7 +7,7 @@ services:
   # IPFS daemon wraps js-ipfs instance with dag-jose codec enabled
   ipfs:
     build:
-      context: js-ipfs-daemon
+      context: components/ipfs
       dockerfile: Dockerfile
     command: /bin/bash -c "[[ -d /root/.jsipfs/repo.lock ]] && rm -rf /root/.jsipfs/repo.lock; npm start"
     volumes:
@@ -45,7 +45,7 @@ services:
   # Ceramic anchor service is a PoC of anchor service according to the Ceramic specification.
   cas:
     build:
-      context: ceramic-anchor-service
+      context: components/cas
       dockerfile: Dockerfile
     volumes:
       - ${PWD}/data/cas/data:/cas/data
@@ -89,9 +89,10 @@ services:
         npm start
       "
 
-  js-ceramic:
+  # Typescript implementation of the Ceramic protocol.
+  ceramic:
     build:
-      context: js-ceramic
+      context: components/ceramic
       dockerfile: Dockerfile.daemon
     ports:
       - ${CERAMIC_DAEMON_PORT}:${CERAMIC_DAEMON_PORT}
