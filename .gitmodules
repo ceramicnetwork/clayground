@@ -4,3 +4,6 @@
 [submodule "ceramic-anchor-service"]
 	path = ceramic-anchor-service
 	url = https://github.com/ceramicnetwork/ceramic-anchor-service.git
+[submodule "js-ipfs-daemon"]
+	path = js-ipfs-daemon
+	url = https://github.com/ceramicnetwork/js-ipfs-daemon.git
