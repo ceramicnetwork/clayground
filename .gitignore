@@ -1,6 +1,9 @@
 .idea
-data/cas
-data/ceramic
-data/ganache
-data/ipfs
-data/local
+
+data
+!data/.gitkeep
+!data/cas/.gitkeep
+!data/ceramic/.gitkeep
+!data/ganache/.gitkeep
+!data/ipfs/.gitkeep
+!data/local/.gitkeep
