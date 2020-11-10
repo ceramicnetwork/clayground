@@ -35,6 +35,13 @@ Clayground stores component data in `./data` directory.
 
 Local Ceramic CLI data is stored in `./data/local`.
 
+There is a utility script `./bin/rmstore.sh` which cleans up components store.
+
+For example:
+```shell script
+./bin/rmstore.sh cas
+```
+
 ## Maintainers
 [@simonovic86](https://github.com/simonovic86)
 
