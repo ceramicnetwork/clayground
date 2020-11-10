@@ -2,7 +2,7 @@
 
 Sandbox environment for starting Ceramic ecosystem locally. Components included:
 
-* [ipfs](https://github.com/ceramicnetwork/js-ipfs-daemon) component - IPFS instance with [dag-jose](https://github.com/ceramicnetwork/js-dag-jose) codec enabled
+* [ipfs](https://github.com/ceramicnetwork/js-ipfs-daemon) - IPFS instance with [dag-jose](https://github.com/ceramicnetwork/js-dag-jose) codec enabled
 * [ganache](https://www.trufflesuite.com/ganache) - local Ethereum blockchain
 * [cas](https://github.com/ceramicnetwork/ceramic-anchor-service) - Typescript Ceramic Anchor Service implementation
 * [ceramic](https://github.com/ceramicnetwork/js-ceramic). Typescript Ceramic implementation.
