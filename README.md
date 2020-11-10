@@ -18,11 +18,13 @@ In order to use the Clayground you need to install:
 
 The default Clayground configuration is stored in `.env` file.
 
-Starting all the components in local:
+Starting all the components locally in a synchronous manner:
 
 ```shell script
-docker-compose up -d
+docker-compose up
 ```
+
+For more `docker-compose` options and start configuration visit the [official documentation](https://docs.docker.com/compose/reference/overview/).
 
 Clayground has local CLI script which connects to deployed Ceramic instance.
 
