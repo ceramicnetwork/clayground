@@ -33,6 +33,8 @@ For example, creating a tile:
 ./bin/ceramic.sh create tile '{"hello": "ceramic"}'
 ```
 
+The script will launch a container per request. This can be omitted by installing the compatible CLI from [npm](https://www.npmjs.com/package/@ceramicnetwork/ceramic-cli).
+
 ### Component storage
 
 Clayground stores component data in `./data` directory.
