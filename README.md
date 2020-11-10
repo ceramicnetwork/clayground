@@ -20,7 +20,9 @@ The default Clayground configuration is stored in `.env` file.
 
 Starting all the components in local:
 
-```docker-compose up -d```
+```shell script
+docker-compose up -d
+```
 
 Clayground has local CLI script which connects to deployed Ceramic instance.
 
