@@ -46,6 +46,15 @@ For example:
 ./bin/rmstore.sh cas
 ```
 
+### Docker utilities
+
+There is a utility script `./bin/docker-destroy-all.sh` which removes **ALL** docker containers and images.
+
+For example:
+```shell script
+./bin/docker-destroy-all.sh
+```
+
 ## Maintainers
 [@simonovic86](https://github.com/simonovic86)
 
