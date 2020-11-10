@@ -107,5 +107,5 @@ services:
           sleep 1;
         done;
         cd packages/ceramic-cli
-        ./bin/ceramic.js daemon --ipfs-api http://ipfs:5011 --anchor-service-api=http://cas:8081/api/v0/requests --port ${CERAMIC_DAEMON_PORT}
+        ./bin/ceramic.js daemon --debug --ipfs-api http://ipfs:5011 --anchor-service-api=http://cas:8081/api/v0/requests --port ${CERAMIC_DAEMON_PORT}
       "
