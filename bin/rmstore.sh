@@ -3,16 +3,16 @@
 declare -a STORES=( "cas" "ceramic" "ipfs" "ganache" "local" )
 
 array_contains() {
-  local store=$1
+  local STORE=$1
   shift
-  local in=1
-  for element; do
-    if [[ $element == "$store" ]]; then
-      in=0
+  local IN=1
+  for ELEMENT; do
+    if [[ $ELEMENT == "$STORE" ]]; then
+      IN=0
       break
     fi
   done
-  return $in
+  return $IN
 }
 
 if [ -z "$1" ]; then
