@@ -26,7 +26,7 @@ Clayground has local CLI script which connects to deployed Ceramic instance.
 
 For example, creating a tile:
 ```shell script
-./bin/ceramic.sh create tile '{"hello": "ceramic}'
+./bin/ceramic.sh create tile '{"hello": "ceramic"}'
 ```
 
 ### Component storage
@@ -34,6 +34,8 @@ For example, creating a tile:
 Clayground stores component data in `./data` directory.
 
 Local Ceramic CLI data is stored in `./data/local`.
+
+#### Deleting component storage
 
 There is a utility script `./bin/rmstore.sh` which cleans up components store.
 
@@ -44,11 +46,6 @@ For example:
 
 ## Maintainers
 [@simonovic86](https://github.com/simonovic86)
-
-## Built With
-
-* [Docker](https://docs.docker.com/get-docker/)
-* [docker-compose](https://docs.docker.com/compose/install/).
 
 ## License
 
