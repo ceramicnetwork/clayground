@@ -18,7 +18,7 @@ function wait_container() {
 FILE="$(pwd)/data/local/.ceramic/config.json"
 if [ ! -e  "$FILE" ]; then
   mkdir -p "$(pwd)/data/local"
-  ID=$(echo "cd packages/ceramic-cli && ./bin/ceramic.js config set ceramicHost http://host.docker.internal:7007" | docker run -i -a stdin --mount src="$(pwd)"/data/local,target=/root,type=bind clayground_js-ceramic /bin/bash)
+  ID=$(echo "cd packages/ceramic-cli && ./bin/ceramic.js config set ceramicHost http://host.docker.internal:7007" | docker run -i -a stdin --mount src="$(pwd)"/data/local,target=/root,type=bind clayground_ceramic /bin/bash)
   wait_container "$ID"
 fi
 
@@ -28,7 +28,7 @@ for i in "$@"; do
   CMD="$CMD \"${i//\"/\\\"}\""
 done
 
-ID=$(echo "cd packages/ceramic-cli && ./bin/ceramic.js $CMD" | docker run -i -a stdin --mount src="$(pwd)"/data/local,target=/root,type=bind clayground_js-ceramic /bin/bash)
+ID=$(echo "cd packages/ceramic-cli && ./bin/ceramic.js $CMD" | docker run -i -a stdin --mount src="$(pwd)"/data/local,target=/root,type=bind clayground_ceramic /bin/bash)
 wait_container "$ID"
 
 docker logs "$ID"
