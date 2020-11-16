@@ -12,7 +12,9 @@ Sandbox environment for starting Ceramic ecosystem locally. Components included:
 In order to use the Clayground you need to install:
 
 * [Docker](https://docs.docker.com/get-docker/)
-* [docker-compose](https://docs.docker.com/compose/install/).
+* [docker-compose](https://docs.docker.com/compose/install/)
+* [Node.js - v14.9.0](https://nodejs.org)
+* [TypeScript - v3.8.3](https://www.typescriptlang.org).
 
 ### Running
 
@@ -26,14 +28,20 @@ docker-compose up
 
 For more `docker-compose` options and start configuration visit the [official documentation](https://docs.docker.com/compose/reference/overview/).
 
-Clayground has local CLI script which connects to deployed Ceramic instance.
+In order to test Clayground sandbox you need to build `js-ceramic` component:
+
+```shell script
+./bin/build-ceramic.sh
+```
+
+When build has been completed, use `ceramic.sh` for executing commands. 
 
 For example, creating a tile:
 ```shell script
 ./bin/ceramic.sh create tile '{"hello": "ceramic"}'
 ```
 
-The script will launch a container per request. This can be omitted by installing the compatible CLI from [npm](https://www.npmjs.com/package/@ceramicnetwork/ceramic-cli).
+Of course, Ceramic CLI can always be installed from [npm](https://www.npmjs.com/package/@ceramicnetwork/ceramic-cli).
 
 ### Component storage
 

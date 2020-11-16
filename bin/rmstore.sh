@@ -2,6 +2,9 @@
 
 declare -a STORES=( "cas" "ceramic" "ipfs" "ganache" "local" )
 
+CLAYGROUND_BIN_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
+CLAYGROUND_ROOT_PATH="$(dirname "$CLAYGROUND_BIN_PATH")"
+
 array_contains() {
   local STORE=$1
   shift
@@ -21,6 +24,6 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-[[ -d "$(pwd)/data/$1" ]] && rm -rf "$(pwd)/data/$1"
+[[ -d "$CLAYGROUND_ROOT_PATH/data/$1" ]] && rm -rf "$CLAYGROUND_ROOT_PATH/data/$1"
 
-echo "$(pwd)/data/$1 storage removed"
+echo "$CLAYGROUND_ROOT_PATH/data/$1 storage removed"
