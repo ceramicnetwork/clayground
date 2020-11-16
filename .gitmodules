@@ -1,6 +1,9 @@
-[submodule "js-ceramic"]
-	path = js-ceramic
-	url = https://github.com/ceramicnetwork/js-ceramic.git
-[submodule "ceramic-anchor-service"]
-	path = ceramic-anchor-service
+[submodule "components/cas"]
+	path = components/cas
 	url = https://github.com/ceramicnetwork/ceramic-anchor-service.git
+[submodule "components/ipfs"]
+	path = components/ipfs
+	url = https://github.com/ceramicnetwork/js-ipfs-daemon
+[submodule "components/ceramic"]
+	path = components/ceramic
+	url = https://github.com/ceramicnetwork/js-ceramic.git
