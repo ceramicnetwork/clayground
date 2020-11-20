@@ -47,8 +47,6 @@ Of course, Ceramic CLI can always be installed from [npm](https://www.npmjs.com/
 
 Clayground stores component data in `./data` directory.
 
-Local Ceramic CLI data is stored in `./data/local`.
-
 #### Deleting component storage
 
 There is a utility script `./bin/rmstore.sh` which cleans up components store.
