@@ -38,7 +38,7 @@ When build has been completed, use `ceramic.sh` for executing commands.
 
 For example, creating a tile:
 ```shell script
-./bin/ceramic.sh create tile '{"hello": "ceramic"}'
+./bin/ceramic.sh create tile --content '{"hello": "ceramic"}'
 ```
 
 Of course, Ceramic CLI can always be installed from [npm](https://www.npmjs.com/package/@ceramicnetwork/ceramic-cli).
