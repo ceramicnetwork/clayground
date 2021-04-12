@@ -2,10 +2,10 @@
 
 Sandbox environment for starting Ceramic ecosystem locally. Components included:
 
-* [ipfs](https://github.com/ceramicnetwork/js-ipfs-daemon) - IPFS instance with [dag-jose](https://github.com/ceramicnetwork/js-dag-jose) codec enabled
-* [ganache](https://www.trufflesuite.com/ganache) - local Ethereum blockchain
-* [cas](https://github.com/ceramicnetwork/ceramic-anchor-service) - Typescript Ceramic Anchor Service implementation
-* [ceramic](https://github.com/ceramicnetwork/js-ceramic). Typescript Ceramic implementation.
+* [Ceramic](https://github.com/ceramicnetwork/js-ceramic) - Typescript implementation of Ceramic
+* [CAS](https://github.com/ceramicnetwork/ceramic-anchor-service) - Typescript implementation of Ceramic Anchor Service
+* [IPFS](https://github.com/ceramicnetwork/js-ceramic/tree/develop/packages/ipfs-daemon) - IPFS daemon with [dag-jose](https://github.com/ceramicnetwork/js-dag-jose) codec enabled
+* [Ganache](https://www.trufflesuite.com/ganache) - Local Ethereum blockchain
 
 ### Prerequisites
 
@@ -14,7 +14,7 @@ In order to use the Clayground you need to install:
 * [Docker](https://docs.docker.com/get-docker/)
 * [docker-compose](https://docs.docker.com/compose/install/)
 * [Node.js - v14.9.0](https://nodejs.org)
-* [TypeScript - v3.8.3](https://www.typescriptlang.org).
+* [TypeScript - v3.8.3](https://www.typescriptlang.org)
 
 ### Running
 
@@ -28,24 +28,21 @@ docker-compose up
 
 For more `docker-compose` options and start configuration visit the [official documentation](https://docs.docker.com/compose/reference/overview/).
 
-In order to test Clayground sandbox you need to build `js-ceramic` component:
+### Execute commands
 
+First get the container ID for js-ceramic:
 ```shell script
-./bin/build-ceramic.sh
+docker ps
 ```
 
-When build has been completed, use `ceramic.sh` for executing commands. 
-
-For example, creating a tile:
+Then run Ceramic commands with `docker exec`. For example, creating a tile:
 ```shell script
-./bin/ceramic.sh create tile --content '{"hello": "ceramic"}'
+docker exec <container_id> packages/cli/bin/ceramic.js create tile --content '{"hello": "ceramic"}'
 ```
-
-Of course, Ceramic CLI can always be installed from [npm](https://www.npmjs.com/package/@ceramicnetwork/ceramic-cli).
 
 ### Component storage
 
-Clayground stores component data in `./data` directory.
+Clayground stores component data in the current directory under `./data`.
 
 #### Deleting component storage
 
@@ -66,6 +63,7 @@ For example:
 ```
 
 ## Maintainers
+[@valmack](https://github.com/valmack)
 [@simonovic86](https://github.com/simonovic86)
 
 ## License
@@ -76,4 +74,4 @@ Apache-2.0 OR MIT
 
 ## Team
 
-Built with  <img src="./resources/heart.png" width="20"/> from [3Box](https://3box.io) team.
+Built with  <img src="./resources/heart.png" width="20"/> by the [3Box Labs](https://3box.io) team.

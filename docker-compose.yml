@@ -2,34 +2,42 @@
 
 version: '3.4'
 
-# Define services
 services:
-  # IPFS daemon wraps js-ipfs instance with dag-jose codec enabled
   ipfs:
-    build:
-      context: components/ipfs
-      dockerfile: Dockerfile
-    command: /bin/bash -c "[[ -d /root/.jsipfs/repo.lock ]] && rm -rf /root/.jsipfs/repo.lock; npm start"
-    volumes:
-      - ${PWD}/data/ipfs:/root/.jsipfs
+    image: ceramicnetwork/ipfs-daemon:latest
     ports:
-      - ${IPFS_SWARM_PORT}:${IPFS_SWARM_PORT}
+      - ${IPFS_SWARM_TCP_PORT}:${IPFS_SWARM_TCP_PORT}
       - ${IPFS_SWARM_WS_PORT}:${IPFS_SWARM_WS_PORT}
       - ${IPFS_API_PORT}:${IPFS_API_PORT}
       - ${IPFS_GATEWAY_PORT}:${IPFS_GATEWAY_PORT}
       - ${IPFS_HEALTHCHECK_PORT}:${IPFS_HEALTHCHECK_PORT}
+    volumes:
+      - ${PWD}/data/ipfs:/${IPFS_PATH}
+    environment:
+      - DEBUG=${IPFS_DEBUG}
+      - HEALTHCHECK_ENABLED=${IPFS_HEALTHCHECK_ENABLED}
+      - HEALTHCHECK_PORT=${IPFS_HEALTHCHECK_PORT}
+      - IPFS_API_PORT=${IPFS_API_PORT}
+      - IPFS_ENABLE_API=${IPFS_ENABLE_API}
+      - IPFS_ENABLE_GATEWAY=${IPFS_ENABLE_GATEWAY}
+      - IPFS_ENABLE_PUBSUB=${IPFS_ENABLE_PUBSUB}
+      - IPFS_GATEWAY_PORT=${IPFS_GATEWAY_PORT}
+      - IPFS_PATH=${IPFS_PATH}
+      - IPFS_SWARM_TCP_PORT=${IPFS_SWARM_TCP_PORT}
+      - IPFS_SWARM_WS_PORT=${IPFS_SWARM_WS_PORT}
+      - NODE_TLS_REJECT_UNAUTHORIZED=${NODE_TLS_REJECT_UNAUTHORIZED}
 
   ganache:
     image: trufflesuite/ganache-cli:latest
     ports:
       - ${GANACHE_PORT}:${GANACHE_PORT}
     volumes:
-      - ./data/ganache:/ganache_data
+      - ${PWD}/data/ganache:/ganache/db
     entrypoint:
       - node
       - /app/ganache-core.docker.cli.js
       - --deterministic
-      - --db=/ganache_data
+      - --db=/db
       - --mnemonic
       - 'move sense much taxi wave hurry recall stairs thank brother nut woman'
       - --networkId
@@ -39,28 +47,23 @@ services:
       - -l
       - '80000000'
       - --quiet
-    depends_on:
-      - ipfs
 
-  # Ceramic anchor service is a PoC of anchor service according to the Ceramic specification.
   cas:
-    build:
-      context: components/cas
-      dockerfile: Dockerfile
+    image: ceramicnetwork/ceramic-anchor-service:latest
     volumes:
       - ${PWD}/data/cas/data:/cas/data
     ports:
-      - ${APP_PORT}:${APP_PORT}
+      - ${CAS_APP_PORT}:${CAS_APP_PORT}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - APP_MODE=${APP_MODE}
-      - APP_PORT=${APP_PORT}
-      - ANCHOR_SCHEDULE_EXPRESSION=${ANCHOR_SCHEDULE_EXPRESSION}
       - ANCHOR_EXPIRATION_PERIOD=${ANCHOR_EXPIRATION_PERIOD}
+      - ANCHOR_SCHEDULE_EXPRESSION=${ANCHOR_SCHEDULE_EXPRESSION}
+      - APP_MODE=${CAS_APP_MODE}
+      - APP_PORT=${CAS_APP_PORT}
+      - BLOCKCHAIN_CONNECTOR=${BLOCKCHAIN_CONNECTOR}
       - IPFS_API_URL=${IPFS_API_URL}
 
-      - BLOCKCHAIN_CONNECTOR=${BLOCKCHAIN_CONNECTOR}
-      - ETH_NETWORK=ganache
+      - ETH_NETWORK=${ETH_NETWORK}
       - ETH_OVERRIDE_GAS_CONFIG=${ETH_OVERRIDE_GAS_CONFIG}
       - ETH_GAS_LIMIT=${ETH_GAS_LIMIT}
       - ETH_GAS_PRICE=${ETH_GAS_PRICE}
@@ -68,44 +71,53 @@ services:
       - ETH_RPC_PORT=${ETH_RPC_PORT}
       - ETH_WALLET_PK=${ETH_WALLET_PK}
 
+      - LOG_LEVEL=${LOG_LEVEL}
+      - MERKLE_DEPTH_LIMIT=${MERKLE_DEPTH_LIMIT}
+
       - TYPEORM_CONNECTION=${TYPEORM_CONNECTION}
-      - TYPEORM_HOST=${TYPEORM_HOST}
-      - TYPEORM_USERNAME=${TYPEORM_USERNAME}
-      - TYPEORM_PASSWORD=${TYPEORM_PASSWORD}
       - TYPEORM_DATABASE=${TYPEORM_DATABASE}
+      - TYPEORM_ENTITIES=${TYPEORM_ENTITIES}
+      - TYPEORM_HOST=${TYPEORM_HOST}
+      - TYPEORM_LOGGING=${TYPEORM_LOGGING}
+      - TYPEORM_PASSWORD=${TYPEORM_PASSWORD}
       - TYPEORM_PORT=${TYPEORM_PORT}
       - TYPEORM_SYNCHRONIZE=${TYPEORM_SYNCHRONIZE}
-      - TYPEORM_LOGGING=${TYPEORM_LOGGING}
-      - TYPEORM_ENTITIES=${TYPEORM_ENTITIES}
+      - TYPEORM_USERNAME=${TYPEORM_USERNAME}
+      - VALIDATE_RECORDS=${VALIDATE_RECORDS}
     depends_on:
       - ganache
       - ipfs
     command: >
       /bin/bash -c "
-        while ! nc -z ganache 8545;
+        while ! nc -z ganache ${GANACHE_PORT};
         do
           sleep 1;
         done;
         npm start
       "
 
-  # Typescript implementation of the Ceramic protocol.
   ceramic:
-    build:
-      context: components/ceramic
-      dockerfile: Dockerfile.daemon
+    image: ceramicnetwork/js-ceramic:latest
     ports:
       - ${CERAMIC_DAEMON_PORT}:${CERAMIC_DAEMON_PORT}
     volumes:
-      - ./data/ceramic:/root/.ceramic
+      - ${PWD}/data/ceramic:/.ceramic
     depends_on:
       - cas
+      - ipfs
+    entrypoint: ""
     command: >
       /bin/bash -c "
-        while ! nc -z cas 8081;
+        while ! nc -z cas ${CAS_APP_PORT};
         do
           sleep 1;
         done;
-        cd packages/ceramic-cli
-        ./bin/ceramic.js daemon --debug --ipfs-api http://ipfs:5011 --anchor-service-api=http://cas:8081/api/v0/requests --port ${CERAMIC_DAEMON_PORT}
+        cd packages/cli
+        ./bin/ceramic.js daemon \
+          --debug ${CERAMIC_DEBUG} \
+          --network ${CERAMIC_NETWORK} \
+          --port ${CERAMIC_DAEMON_PORT} \
+          --ipfs-api http://ipfs:${IPFS_API_PORT} \
+          --anchor-service-api http://cas:${CAS_APP_PORT} \
+          --ethereum-rpc http://ganache:${ETH_RPC_PORT}
       "
