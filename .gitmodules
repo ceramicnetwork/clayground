@@ -7,3 +7,6 @@
 [submodule "components/ceramic"]
 	path = components/ceramic
 	url = https://github.com/ceramicnetwork/js-ceramic.git
+[submodule "components/web-playground"]
+	path = components/web-playground
+	url = https://github.com/ceramicstudio/web-playground
