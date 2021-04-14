@@ -7,7 +7,7 @@ const DID_SEED = randomBytes(32)
 
 // Replace endpoints as needed
 const API_URL = 'http://localhost:7007'
-// const GATEWAY_URL = 'https://gateway-dev.ceramic.network'
+const GATEWAY_URL = 'https://gateway-dev.ceramic.network'
 
 // Replace stream ids as needed
 const ANCHOR_STATUS_STREAM_ID = 'kjzl6cwe1jw149l4lq28hgdyexlfxi7kj841m6ada0vnlp33ai6tvlmrwpx7bav'
