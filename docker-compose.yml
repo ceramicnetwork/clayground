@@ -4,7 +4,7 @@ version: '3.4'
 
 services:
   ipfs:
-    image: ceramicnetwork/ipfs-daemon:latest
+    image: ceramicnetwork/ipfs-daemon:${IPFS_IMAGE_TAG}
     ports:
       - ${IPFS_SWARM_TCP_PORT}:${IPFS_SWARM_TCP_PORT}
       - ${IPFS_SWARM_WS_PORT}:${IPFS_SWARM_WS_PORT}
@@ -41,7 +41,7 @@ services:
       - --mnemonic
       - 'move sense much taxi wave hurry recall stairs thank brother nut woman'
       - --networkId
-      - '5777'
+      - '${GANACHE_NETWORK_ID}'
       - --hostname
       - '0.0.0.0'
       - -l
@@ -49,7 +49,7 @@ services:
       - --quiet
 
   cas:
-    image: ceramicnetwork/ceramic-anchor-service:latest
+    image: ceramicnetwork/ceramic-anchor-service:${CAS_IMAGE_TAG}
     volumes:
       - ${PWD}/data/cas/data:/cas/data
     ports:
@@ -58,17 +58,19 @@ services:
       - NODE_ENV=${NODE_ENV}
       - ANCHOR_EXPIRATION_PERIOD=${ANCHOR_EXPIRATION_PERIOD}
       - ANCHOR_SCHEDULE_EXPRESSION=${ANCHOR_SCHEDULE_EXPRESSION}
-      - APP_MODE=${CAS_APP_MODE}
+      - APP_MODE=bundled
       - APP_PORT=${CAS_APP_PORT}
       - BLOCKCHAIN_CONNECTOR=${BLOCKCHAIN_CONNECTOR}
+      - CERAMIC_API_URL=${CERAMIC_API_URL}
       - IPFS_API_URL=${IPFS_API_URL}
 
       - ETH_NETWORK=${ETH_NETWORK}
       - ETH_OVERRIDE_GAS_CONFIG=${ETH_OVERRIDE_GAS_CONFIG}
       - ETH_GAS_LIMIT=${ETH_GAS_LIMIT}
       - ETH_GAS_PRICE=${ETH_GAS_PRICE}
-      - ETH_RPC_HOST=${ETH_RPC_HOST}
-      - ETH_RPC_PORT=${ETH_RPC_PORT}
+      - ETH_RPC_HOST=${CAS_ETH_RPC_HOST}
+      - ETH_RPC_PORT=${CAS_ETH_RPC_PORT}
+      - ETH_RPC_URL=${CAS_ETH_RPC_URL}
       - ETH_WALLET_PK=${ETH_WALLET_PK}
 
       - LOG_LEVEL=${LOG_LEVEL}
@@ -97,7 +99,7 @@ services:
       "
 
   ceramic:
-    image: ceramicnetwork/js-ceramic:latest
+    image: ceramicnetwork/js-ceramic:${CERAMIC_IMAGE_TAG}
     ports:
       - ${CERAMIC_DAEMON_PORT}:${CERAMIC_DAEMON_PORT}
     volumes:
@@ -119,5 +121,5 @@ services:
           --port ${CERAMIC_DAEMON_PORT} \
           --ipfs-api http://ipfs:${IPFS_API_PORT} \
           --anchor-service-api http://cas:${CAS_APP_PORT} \
-          --ethereum-rpc http://ganache:${ETH_RPC_PORT}
+          --ethereum-rpc ${CERAMIC_ETH_RPC_URL}
       "

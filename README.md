@@ -26,6 +26,12 @@ Starting all the components locally in a synchronous manner:
 docker-compose up
 ```
 
+Pass in other configuration files with the `--env-file` flag:
+
+```shell script
+docker-compose --env-file .env.dev-unstable up
+```
+
 For more `docker-compose` options and start configuration visit the [official documentation](https://docs.docker.com/compose/reference/overview/).
 
 ### Execute commands
@@ -64,7 +70,6 @@ For example:
 
 ## Maintainers
 [@valmack](https://github.com/valmack)
-[@simonovic86](https://github.com/simonovic86)
 
 ## License
 
