@@ -69,7 +69,7 @@ For example:
 ```
 
 ## Maintainers
-[@valmack](https://github.com/valmack)
+[@v-stickykeys](https://github.com/v-stickykeys)
 
 ## License
 
