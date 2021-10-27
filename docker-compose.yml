@@ -63,14 +63,15 @@ services:
       - BLOCKCHAIN_CONNECTOR=${BLOCKCHAIN_CONNECTOR}
       - CERAMIC_API_URL=${CERAMIC_API_URL}
       - IPFS_API_URL=${IPFS_API_URL}
+      - IPFS_PUBSUB_TOPIC=${IPFS_PUBSUB_TOPIC}
 
       - ETH_NETWORK=${ETH_NETWORK}
       - ETH_OVERRIDE_GAS_CONFIG=${ETH_OVERRIDE_GAS_CONFIG}
       - ETH_GAS_LIMIT=${ETH_GAS_LIMIT}
       - ETH_GAS_PRICE=${ETH_GAS_PRICE}
-      - ETH_RPC_HOST=${CAS_ETH_RPC_HOST}
-      - ETH_RPC_PORT=${CAS_ETH_RPC_PORT}
-      - ETH_RPC_URL=${CAS_ETH_RPC_URL}
+      - ETH_RPC_HOST=${ETH_RPC_HOST}
+      - ETH_RPC_PORT=${ETH_RPC_PORT}
+      # - ETH_RPC_URL=${ETH_RPC_URL}
       - ETH_WALLET_PK=${ETH_WALLET_PK}
 
       - LOG_LEVEL=${LOG_LEVEL}
@@ -122,4 +123,5 @@ services:
           --ipfs-api http://ipfs:${IPFS_API_PORT} \
           --anchor-service-api http://cas:${CAS_APP_PORT} \
           --ethereum-rpc ${CERAMIC_ETH_RPC_URL}
+          --pubsubTopic ${IPFS_PUBSUB_TOPIC}
       "
