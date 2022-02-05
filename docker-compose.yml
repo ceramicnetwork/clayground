@@ -112,12 +112,5 @@ services:
           sleep 1;
         done;
         cd packages/cli
-        ./bin/ceramic.js daemon \
-          --debug ${CERAMIC_DEBUG} \
-          --network ${CERAMIC_NETWORK} \
-          --port ${CERAMIC_DAEMON_PORT} \
-          --ipfs-api http://ipfs:${IPFS_API_PORT} \
-          --anchor-service-api http://cas:${CAS_APP_PORT} \
-          --ethereum-rpc ${ETH_RPC_URL}
-          --pubsubTopic ${IPFS_PUBSUB_TOPIC}
+        ./bin/ceramic.js daemon --port ${CERAMIC_DAEMON_PORT} --network ${CERAMIC_NETWORK} --ipfs-api http://ipfs:${IPFS_API_PORT} --anchor-service-api http://cas:${CAS_APP_PORT} --ethereum-rpc ${ETH_RPC_URL} --pubsubTopic ${IPFS_PUBSUB_TOPIC} --debug ${CERAMIC_DEBUG}
       "
