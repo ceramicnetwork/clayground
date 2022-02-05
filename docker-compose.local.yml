@@ -1,0 +1,115 @@
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+
+version: '3.4'
+
+services:
+  ipfs:
+    build:
+      context: components/ceramic
+      dockerfile: Dockerfile.ipfs-daemon
+    ports:
+      - ${IPFS_SWARM_PORT}:${IPFS_SWARM_PORT}
+      - ${IPFS_SWARM_WS_PORT}:${IPFS_SWARM_WS_PORT}
+      - ${IPFS_API_PORT}:${IPFS_API_PORT}
+      - ${IPFS_GATEWAY_PORT}:${IPFS_GATEWAY_PORT}
+      - ${IPFS_HEALTHCHECK_PORT}:${IPFS_HEALTHCHECK_PORT}
+    volumes:
+      - ${PWD}/${DATA_PATH}ipfs:/${IPFS_PATH}
+    command: >
+      /bin/bash -c "
+        [[ -d /${IPFS_PATH}/repo.lock ]] && rm -rf /${IPFS_PATH}/repo.lock;
+        cd packages/ipfs-daemon
+        ./lib/bin/ipfs-daemon.js
+      "
+
+  ganache:
+    image: trufflesuite/ganache-cli:latest
+    ports:
+      - ${ETH_RPC_PORT}:${ETH_RPC_PORT}
+    volumes:
+      - ${PWD}/${DATA_PATH}ganache:/ganache/db
+    entrypoint:
+      - node
+      - /app/ganache-core.docker.cli.js
+      - --deterministic
+      - --db=/db
+      - --mnemonic
+      - 'move sense much taxi wave hurry recall stairs thank brother nut woman'
+      - --networkId
+      - '${GANACHE_NETWORK_ID}'
+      - --hostname
+      - '0.0.0.0'
+      - -l
+      - '80000000'
+      - --quiet
+
+  cas:
+    build:
+      context: components/cas
+      dockerfile: Dockerfile
+    volumes:
+      - ${PWD}/${DATA_PATH}cas/db:/cas/db
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    environment:
+      - NODE_ENV=${CAS_NODE_ENV}
+      - ANCHOR_EXPIRATION_PERIOD=${CAS_ANCHOR_EXPIRATION_PERIOD}
+      - ANCHOR_SCHEDULE_EXPRESSION=${CAS_ANCHOR_SCHEDULE_EXPRESSION}
+      - APP_MODE=bundled
+      - APP_PORT=${CAS_APP_PORT}
+      - BLOCKCHAIN_CONNECTOR=${CAS_BLOCKCHAIN_CONNECTOR}
+      - CERAMIC_API_URL=${CERAMIC_API_URL}
+      - ETH_NETWORK=${CAS_ETH_NETWORK}
+      - ETH_RPC_URL=${ETH_RPC_URL}
+      - ETH_WALLET_PK=${CAS_ETH_WALLET_PK}
+      - IPFS_API_URL=${IPFS_API_URL}
+      - IPFS_PUBSUB_TOPIC=${IPFS_PUBSUB_TOPIC}
+      - LOG_LEVEL=${CAS_LOG_LEVEL}
+      - MERKLE_DEPTH_LIMIT=${CAS_MERKLE_DEPTH_LIMIT}
+      - TYPEORM_CONNECTION=${CAS_TYPEORM_CONNECTION}
+      - TYPEORM_DATABASE=${CAS_TYPEORM_DATABASE}
+      - TYPEORM_ENTITIES=${CAS_TYPEORM_ENTITIES}
+      - TYPEORM_HOST=${CAS_TYPEORM_HOST}
+      - TYPEORM_LOGGING=${CAS_TYPEORM_LOGGING}
+      - TYPEORM_PASSWORD=${CAS_TYPEORM_PASSWORD}
+      - TYPEORM_PORT=${CAS_TYPEORM_PORT}
+      - TYPEORM_SYNCHRONIZE=${CAS_TYPEORM_SYNCHRONIZE}
+      - TYPEORM_USERNAME=${CAS_TYPEORM_USERNAME}
+      - VALIDATE_RECORDS=${CAS_VALIDATE_RECORDS}
+    depends_on:
+      - ganache
+      - ipfs
+    command: >
+      /bin/bash -c "
+        while ! nc -z ganache ${ETH_RPC_PORT};
+        do
+          sleep 1;
+        done;
+        npm start
+      "
+
+  ceramic:
+    build:
+      context: components/ceramic
+      dockerfile: Dockerfile.daemon
+    ports:
+      - ${CERAMIC_DAEMON_PORT}:${CERAMIC_DAEMON_PORT}
+    volumes:
+      - ${PWD}/${DATA_PATH}ceramic:/.ceramic
+    depends_on:
+      - cas
+      - ipfs
+    entrypoint: ""
+    command: >
+      /bin/bash -c "
+        while ! nc -z ipfs ${IPFS_HEALTHCHECK_PORT};
+        do
+          sleep 1;
+        done;
+        while ! nc -z cas ${CAS_APP_PORT};
+        do
+          sleep 1;
+        done;
+        cd packages/cli
+        ./bin/ceramic.js daemon --port ${CERAMIC_DAEMON_PORT} --network ${CERAMIC_NETWORK} --ipfs-api http://ipfs:${IPFS_API_PORT} --anchor-service-api http://cas:${CAS_APP_PORT} --ethereum-rpc ${ETH_RPC_URL} --pubsubTopic ${IPFS_PUBSUB_TOPIC} --debug ${CERAMIC_DEBUG}
+      "
