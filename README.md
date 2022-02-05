@@ -13,8 +13,8 @@ In order to use the Clayground you need to install:
 
 * [Docker](https://docs.docker.com/get-docker/)
 * [docker-compose](https://docs.docker.com/compose/install/)
-* [Node.js - v14.9.0](https://nodejs.org)
-* [TypeScript - v3.8.3](https://www.typescriptlang.org)
+* [Node.js - v14](https://nodejs.org)
+* [TypeScript](https://www.typescriptlang.org)
 
 ### Running
 
@@ -75,8 +75,6 @@ For example:
 
 Apache-2.0 OR MIT
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fceramicnetwork%2Fclayground.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fceramicnetwork%2Fclayground?ref=badge_large)
-
 ## Team
 
-Built with  <img src="./resources/heart.png" width="20"/> by the [3Box Labs](https://3box.io) team.
+Built with ❤️ by the [3Box Labs](https://3boxlabs.com) team.
