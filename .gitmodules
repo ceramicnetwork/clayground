@@ -1,9 +1,9 @@
-[submodule "submodules/cas"]
-	path = submodules/cas
-	url = https://github.com/ceramicnetwork/ceramic-anchor-service.git
-[submodule "submodules/ipfs"]
+[submodule "ipfs"]
 	path = submodules/ipfs
-	url = https://github.com/ceramicnetwork/js-ceramic.git
-[submodule "submodules/ceramic"]
+	url = https://github.com/ceramicnetwork/go-ipfs-daemon
+[submodule "cas"]
+	path = submodules/cas
+	url = https://github.com/ceramicnetwork/ceramic-anchor-service
+[submodule "ceramic"]
 	path = submodules/ceramic
-	url = https://github.com/ceramicnetwork/js-ceramic.git
+	url = https://github.com/ceramicnetwork/js-ceramic
