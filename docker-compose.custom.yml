@@ -1,12 +1,35 @@
 # Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
 
+# Use this configuration to run Clayground against submodules or symlinked repos on your local machine
+
 version: '3.4'
 
 services:
+  # ipfs: # ipfs-daemon from js-ceramic v1
+  #   build:
+  #     context: submodules/ceramic
+  #     # context: symlinks/ceramic
+  #     dockerfile: Dockerfile.ipfs-daemon
+  #   ports:
+  #     - ${IPFS_SWARM_PORT}:${IPFS_SWARM_PORT}
+  #     - ${IPFS_SWARM_WS_PORT}:${IPFS_SWARM_WS_PORT}
+  #     - ${IPFS_API_PORT}:${IPFS_API_PORT}
+  #     - ${IPFS_GATEWAY_PORT}:${IPFS_GATEWAY_PORT}
+  #     - ${IPFS_HEALTHCHECK_PORT}:${IPFS_HEALTHCHECK_PORT}
+  #   volumes:
+  #     - ${PWD}/${DATA_PATH}ipfs:/${IPFS_PATH}
+  #   command: >
+  #     /bin/bash -c "
+  #       [[ -d /${IPFS_PATH}/repo.lock ]] && rm -rf /${IPFS_PATH}/repo.lock;
+  #       cd packages/ipfs-daemon
+  #       ./lib/bin/ipfs-daemon.js
+  #     "
+
   ipfs:
     build:
-      context: components/ceramic
-      dockerfile: Dockerfile.ipfs-daemon
+      context: submodules/ipfs
+      # context: symlinks/ipfs
+      dockerfile: Dockerfile
     ports:
       - ${IPFS_SWARM_PORT}:${IPFS_SWARM_PORT}
       - ${IPFS_SWARM_WS_PORT}:${IPFS_SWARM_WS_PORT}
@@ -18,8 +41,7 @@ services:
     command: >
       /bin/bash -c "
         [[ -d /${IPFS_PATH}/repo.lock ]] && rm -rf /${IPFS_PATH}/repo.lock;
-        cd packages/ipfs-daemon
-        ./lib/bin/ipfs-daemon.js
+        /sbin/tini -- /usr/local/bin/start_ipfs daemon --migrate=true --agent-version-suffix=docker
       "
 
   ganache:
@@ -45,7 +67,8 @@ services:
 
   cas:
     build:
-      context: components/cas
+      context: submodules/cas
+      # context: symlinks/cas
       dockerfile: Dockerfile
     volumes:
       - ${PWD}/${DATA_PATH}cas/db:/cas/db
@@ -90,7 +113,8 @@ services:
 
   ceramic:
     build:
-      context: components/ceramic
+      context: submodules/ceramic
+      # context: symlinks/ceramic
       dockerfile: Dockerfile.daemon
     ports:
       - ${CERAMIC_DAEMON_PORT}:${CERAMIC_DAEMON_PORT}
