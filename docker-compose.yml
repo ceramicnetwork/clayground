@@ -103,6 +103,10 @@ services:
     entrypoint: ""
     command: >
       /bin/bash -c "
+        while ! nc -z ipfs ${IPFS_HEALTHCHECK_PORT};
+        do
+          sleep 1;
+        done;
         while ! nc -z cas ${CAS_APP_PORT};
         do
           sleep 1;
