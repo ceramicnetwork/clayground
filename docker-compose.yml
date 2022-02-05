@@ -12,7 +12,7 @@ services:
       - ${IPFS_GATEWAY_PORT}:${IPFS_GATEWAY_PORT}
       - ${IPFS_HEALTHCHECK_PORT}:${IPFS_HEALTHCHECK_PORT}
     volumes:
-      - ${PWD}/data/ipfs:/${IPFS_PATH}
+      - ${PWD}/${DATA_PATH}ipfs:/${IPFS_PATH}
     environment:
       - DEBUG=${IPFS_DEBUG}
       - HEALTHCHECK_ENABLED=${IPFS_HEALTHCHECK_ENABLED}
@@ -32,7 +32,7 @@ services:
     ports:
       - ${ETH_RPC_PORT}:${ETH_RPC_PORT}
     volumes:
-      - ${PWD}/data/ganache:/ganache/db
+      - ${PWD}/${DATA_PATH}ganache:/ganache/db
     entrypoint:
       - node
       - /app/ganache-core.docker.cli.js
@@ -51,7 +51,7 @@ services:
   cas:
     image: ceramicnetwork/ceramic-anchor-service:${CAS_IMAGE_TAG}
     volumes:
-      - ${PWD}/data/cas/data:/cas/data
+      - ${PWD}/${DATA_PATH}cas/db:/cas/db
     ports:
       - ${CAS_APP_PORT}:${CAS_APP_PORT}
     environment:
@@ -96,7 +96,7 @@ services:
     ports:
       - ${CERAMIC_DAEMON_PORT}:${CERAMIC_DAEMON_PORT}
     volumes:
-      - ${PWD}/data/ceramic:/.ceramic
+      - ${PWD}/${DATA_PATH}ceramic:/.ceramic
     depends_on:
       - cas
       - ipfs
