@@ -2,6 +2,8 @@
 
 declare -a STORES=( "cas" "ceramic" "ipfs" "ganache" "local" )
 
+DATA_PATH=data/default/
+
 CLAYGROUND_BIN_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
 CLAYGROUND_ROOT_PATH="$(dirname "$CLAYGROUND_BIN_PATH")"
 
@@ -24,6 +26,6 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-[[ -d "$CLAYGROUND_ROOT_PATH/data/$1" ]] && rm -rf "$CLAYGROUND_ROOT_PATH/data/$1"
+[[ -d "$CLAYGROUND_ROOT_PATH/$DATA_PATH$1" ]] && rm -rf "$CLAYGROUND_ROOT_PATH/$DATA_PATH$1"
 
-echo "$CLAYGROUND_ROOT_PATH/data/$1 storage removed"
+echo "$CLAYGROUND_ROOT_PATH/$DATA_PATH$1 storage removed"
