@@ -4,28 +4,23 @@ version: '3.4'
 
 services:
   ipfs:
-    image: ceramicnetwork/ipfs-daemon:${IPFS_IMAGE_TAG}
+    build:
+      context: components/ceramic
+      dockerfile: Dockerfile.ipfs-daemon
     ports:
-      - ${IPFS_SWARM_TCP_PORT}:${IPFS_SWARM_TCP_PORT}
+      - ${IPFS_SWARM_PORT}:${IPFS_SWARM_PORT}
       - ${IPFS_SWARM_WS_PORT}:${IPFS_SWARM_WS_PORT}
       - ${IPFS_API_PORT}:${IPFS_API_PORT}
       - ${IPFS_GATEWAY_PORT}:${IPFS_GATEWAY_PORT}
       - ${IPFS_HEALTHCHECK_PORT}:${IPFS_HEALTHCHECK_PORT}
     volumes:
       - ${PWD}/${DATA_PATH}ipfs:/${IPFS_PATH}
-    environment:
-      - DEBUG=${IPFS_DEBUG}
-      - HEALTHCHECK_ENABLED=${IPFS_HEALTHCHECK_ENABLED}
-      - HEALTHCHECK_PORT=${IPFS_HEALTHCHECK_PORT}
-      - IPFS_API_PORT=${IPFS_API_PORT}
-      - IPFS_ENABLE_API=${IPFS_ENABLE_API}
-      - IPFS_ENABLE_GATEWAY=${IPFS_ENABLE_GATEWAY}
-      - IPFS_ENABLE_PUBSUB=${IPFS_ENABLE_PUBSUB}
-      - IPFS_GATEWAY_PORT=${IPFS_GATEWAY_PORT}
-      - IPFS_PATH=${IPFS_PATH}
-      - IPFS_SWARM_TCP_PORT=${IPFS_SWARM_TCP_PORT}
-      - IPFS_SWARM_WS_PORT=${IPFS_SWARM_WS_PORT}
-      - NODE_TLS_REJECT_UNAUTHORIZED=${IPFS_NODE_TLS_REJECT_UNAUTHORIZED}
+    command: >
+      /bin/bash -c "
+        [[ -d /${IPFS_PATH}/repo.lock ]] && rm -rf /${IPFS_PATH}/repo.lock;
+        cd packages/ipfs-daemon
+        ./lib/bin/ipfs-daemon.js
+      "
 
   ganache:
     image: trufflesuite/ganache-cli:latest
@@ -49,11 +44,13 @@ services:
       - --quiet
 
   cas:
-    image: ceramicnetwork/ceramic-anchor-service:${CAS_IMAGE_TAG}
+    build:
+      context: components/cas
+      dockerfile: Dockerfile
     volumes:
       - ${PWD}/${DATA_PATH}cas/db:/cas/db
     ports:
-      - ${CAS_APP_PORT}:${CAS_APP_PORT}
+      - ${APP_PORT}:${APP_PORT}
     environment:
       - NODE_ENV=${CAS_NODE_ENV}
       - ANCHOR_EXPIRATION_PERIOD=${CAS_ANCHOR_EXPIRATION_PERIOD}
@@ -92,7 +89,9 @@ services:
       "
 
   ceramic:
-    image: ceramicnetwork/js-ceramic:${CERAMIC_IMAGE_TAG}
+    build:
+      context: components/ceramic
+      dockerfile: Dockerfile.daemon
     ports:
       - ${CERAMIC_DAEMON_PORT}:${CERAMIC_DAEMON_PORT}
     volumes:
