@@ -34,6 +34,15 @@ docker-compose --env-file .env.dev-unstable up
 
 For more `docker-compose` options and start configuration visit the [official documentation](https://docs.docker.com/compose/reference/overview/).
 
+**Perf testing**
+
+To start perf testing one has to run additional `perf` service:
+```shell
+docker-compose -f docker-compose.yml -f docker-compose.perf.yml up
+```
+
+It will immediately start performance testing suite with all the tests.
+
 ### Execute commands
 
 First get the container ID for js-ceramic:
