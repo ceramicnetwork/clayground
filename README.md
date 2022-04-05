@@ -34,11 +34,11 @@ docker-compose --env-file .env.dev-unstable up
 
 For more `docker-compose` options and start configuration visit the [official documentation](https://docs.docker.com/compose/reference/overview/).
 
-**Perf testing**
+**Performance testing**
 
-To start perf testing one has to run additional `perf` service:
+To start performance testing one has to run additional `benchie` service:
 ```shell
-docker-compose -f docker-compose.yml -f docker-compose.perf.yml up
+docker-compose -f docker-compose.yml -f docker-compose.benchie.yml up
 ```
 
 It will immediately start performance testing suite with all the tests.

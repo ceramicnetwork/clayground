@@ -1,11 +1,10 @@
 version: '3.4'
 
 services:
-  perf:
+  benchie:
     depends_on:
       - ceramic
-    build:
-      context: submodules/benchie
+    image: ceramicnetwork/benchie:${BENCHIE_IMAGE_TAG}
     environment:
       CERAMIC_ENDPOINT: "http://ceramic:${CERAMIC_DAEMON_PORT}"
       SECONDARY_CERAMIC_ENDPOINT: "https://ceramic-clay.3boxlabs.com/"
