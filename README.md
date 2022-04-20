@@ -34,6 +34,15 @@ docker-compose --env-file .env.dev-unstable up
 
 For more `docker-compose` options and start configuration visit the [official documentation](https://docs.docker.com/compose/reference/overview/).
 
+**Performance testing**
+
+To start performance testing one has to run additional `benchie` service:
+```shell
+docker-compose -f docker-compose.yml -f docker-compose.benchie.yml up
+```
+
+It will immediately start performance testing suite with all the tests.
+
 ### Execute commands
 
 First get the container ID for js-ceramic:

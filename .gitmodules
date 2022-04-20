@@ -7,3 +7,6 @@
 [submodule "ceramic"]
 	path = submodules/ceramic
 	url = https://github.com/ceramicnetwork/js-ceramic
+[submodule "benchie"]
+	path = submodules/benchie
+	url = https://github.com/ceramicnetwork/benchie.git

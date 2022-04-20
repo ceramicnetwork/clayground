@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  benchie:
+    depends_on:
+      - ceramic
+    image: ceramicnetwork/benchie:${BENCHIE_IMAGE_TAG}
+    environment:
+      CERAMIC_ENDPOINT: "http://ceramic:${CERAMIC_DAEMON_PORT}"
+      SECONDARY_CERAMIC_ENDPOINT: "https://ceramic-clay.3boxlabs.com/"
+    entrypoint: ""
+    command: >
+      /bin/bash -c "
+        apt-get update -y && apt-get install -y netcat;
+        while ! nc -z ceramic ${CERAMIC_DAEMON_PORT};
+        do
+          sleep 1;
+        done;
+        npm run start
+      "
