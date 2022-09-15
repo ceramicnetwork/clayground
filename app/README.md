@@ -18,6 +18,13 @@ CID=<cid> node ./out/scripts/cid-to-ds-key.js
 
 Run with docker
 ```sh
-docker build .
-docker run -e ENV_VAR=<env_var> node <path_to_out_file>
+docker build . -t clayground-app
+docker run -e ENV_VAR=<env_var> clayground-app node <path_to_out_file>
+```
+
+e.g.
+```sh
+docker run -e DS_KEY=CIQA5DFMLSDYCII6LCLCE5LKPNE5RJCTPNBQTUI3XIUDURVUADOZ62A \
+  clayground-app \
+  node ./out/scripts/persistence-check.js
 ```
