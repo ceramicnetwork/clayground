@@ -4,3 +4,6 @@
 data
 !data/.gitkeep
 !data/default/.gitkeep
+
+node_modules
+app/out

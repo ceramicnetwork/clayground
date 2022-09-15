@@ -1,0 +1,25 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT or Apache 2.0",
+  "dependencies": {
+    "@ceramicnetwork/common": "2.6.1-rc.2",
+    "@ceramicnetwork/ipfs-daemon": "2.1.5-rc.2",
+    "@types/node": "^18.7.18",
+    "dag-jose": "2.0.0",
+    "ipfs-http-client": "55.0.0",
+    "multiformats": "9.8.1",
+    "multihashes": "0.4.14",
+    "thirty-two": "^1.0.2",
+    "typescript": "^4.8.3"
+  }
+}
